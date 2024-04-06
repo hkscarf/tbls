@@ -17,35 +17,40 @@ Key features of `tbls` are:
 
 ### Table of Contents
 
-  - [Quick Start](#quick-start)
-  - [Install](#install)
-  - [Getting Started](#getting-started)
-    - [Document a database](#document-a-database)
-    - [Diff database and ( document or database )](#diff-database-and--document-or-database-)
-    - [Lint a database](#lint-a-database)
-    - [Measure document coverage](#measure-document-coverage)
-    - [Continuous Integration](#continuous-integration)
-  - [Configuration](#configuration)
-    - [Name](#name)
-    - [Description](#description)
-    - [Labels](#labels)
-    - [DSN](#dsn)
-      - [Support Datasource](#support-datasource)
-    - [Document path](#document-path)
-    - [Document format](#document-format)
-    - [ER diagram](#er-diagram)
-    - [Filter tables](#filter-tables)
-    - [Lint](#lint)
-    - [Comments](#comments)
-    - [Relations](#relations)
-    - [Viewpoints](#viewpoints)
-    - [Dictionary](#dictionary)
-    - [Personalized Templates](#personalized-templates)
-    - [Required Version](#required-version)
-  - [Expand environment variables](#expand-environment-variables)
-  - [Output formats](#output-formats)
-  - [Command arguments](#command-arguments)
-  - [Environment variables](#environment-variables)
+- [Quick Start](#quick-start)
+- [Install](#install)
+- [Getting Started](#getting-started)
+  - [Document a database](#document-a-database)
+  - [Diff database and ( document or database )](#diff-database-and--document-or-database-)
+  - [Re-generating database documentation](#re-generating-database-documentation)
+  - [Lint a database](#lint-a-database)
+  - [Measure document coverage](#measure-document-coverage)
+  - [Continuous Integration](#continuous-integration)
+- [Configuration](#configuration)
+  - [Name](#name)
+  - [Description](#description)
+  - [Labels](#labels)
+  - [DSN](#dsn)
+    - [Support Datasource](#support-datasource)
+  - [Document path](#document-path)
+  - [Document format](#document-format)
+  - [ER diagram](#er-diagram)
+  - [Lint](#lint)
+  - [Filter tables](#filter-tables)
+    - [Filter logic](#filter-logic)
+  - [Comments](#comments)
+  - [Relations](#relations)
+    - [Override relations](#override-relations)
+    - [Automatically detect relations](#automatically-detect-relations)
+  - [Dictionary](#dictionary)
+  - [Personalized Templates](#personalized-templates)
+  - [Required Version](#required-version)
+- [Expand environment variables](#expand-environment-variables)
+  - [Viewpoints](#viewpoints)
+- [Output formats](#output-formats)
+- [Command arguments](#command-arguments)
+- [Output Schema data](#output-schema-data)
+- [Environment variables](#environment-variables)
 
 <br>
 
@@ -598,6 +603,15 @@ If a field has multiple types, the `multipleFieldType` query can be used to list
 dsn: mongodb://mongoadmin:secret@localhost:27017/test?sampleSize=20&multipleFieldType=true
 ```
 
+**ClickHouse:**
+
+``` yaml
+# .tbls.yml
+dsn: clickhouse://dbuser:dbpass@localhost:8132/dbname
+```
+
+See also: https://pkg.go.dev/github.com/ClickHouse/clickhouse-go/v2
+
 **JSON:**
 
 The JSON file output by the `tbls out -t json` command can be read as a datasource.
@@ -815,7 +829,7 @@ lint:
     exclude:
       - schema_migrations
   # checks if tables are included in at least one viewpoint
-  requireViewpoints: 
+  requireViewpoints:
     enabled: true
     exclude:
       - schema_migrations

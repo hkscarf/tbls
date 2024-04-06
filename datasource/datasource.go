@@ -15,6 +15,7 @@ import (
 	"github.com/k1LoW/go-github-client/v58/factory"
 	"github.com/k1LoW/tbls/config"
 	"github.com/k1LoW/tbls/drivers"
+	"github.com/k1LoW/tbls/drivers/clickhouse"
 	"github.com/k1LoW/tbls/drivers/mariadb"
 	"github.com/k1LoW/tbls/drivers/mssql"
 	"github.com/k1LoW/tbls/drivers/mysql"
@@ -103,6 +104,8 @@ func Analyze(dsn config.DSN) (*schema.Schema, error) {
 		s.Name = splitted[1]
 		if u.Scheme == "rs" || u.Scheme == "redshift" {
 			driver = redshift.New(db)
+		} else if u.Scheme == "clickhouse" {
+			driver = clickhouse.New(db)
 		} else {
 			driver = postgres.New(db)
 		}
